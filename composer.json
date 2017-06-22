@@ -7,6 +7,7 @@
     "require": {
         "php": ">=5.6.4",
         "caouecs/laravel-lang": "~3.0",
+        "illuminate/auth": "5.4.27",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0"
     },
