@@ -15,4 +15,7 @@ Route::get('/','StaticPagesController@home')->name('home');
 Route::get('/help','StaticPagesController@help')->name('help');
 Route::get('/about','StaticPagesController@about')->name('about');
 
-Route::get('signup','UserController@create')->name('signup');
+Route::get('signup','UsersController@create')->name('signup');
+
+//资源型控制器 符合RESTful架构
+Route::resource('users','UsersController');

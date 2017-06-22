@@ -1,7 +1,16 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: frank
- * Date: 2017/6/21
- * Time: 下午5:53
- */
+@extends('layouts.default')
+@section('title',$user->name)
+
+@section('content')
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+            <div class="col-md-12">
+                <div class="col-md-offset-2 col-md-8">
+                    <section class="user_info">
+                        @include('shared.user_info', ['user' => $user])
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+@stop
