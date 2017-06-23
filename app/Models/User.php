@@ -30,7 +30,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+         'remember_token',
     ];
 
     /**
@@ -39,5 +39,16 @@ class User extends Authenticatable
     public function gravatar($size = '100'){
         $hash = md5(strtolower(trim($this->attributes['email'])));
         return "http://www.gravatar.com/avatar/$hash?s=$size";
+    }
+
+    /**
+     * 在eloquent模型中创建监听事件 来对增删改查进行监听 类似于tp中的before_insert  before_update...
+     */
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($user){
+            $user->activation_token = str_random(30);
+        });
     }
 }

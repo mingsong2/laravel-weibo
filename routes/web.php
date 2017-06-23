@@ -26,7 +26,9 @@ Route::get('login','SessionController@create')->name('login');
 //创建新会话(登录)
 Route::post('login','SessionController@store')->name('login');
 //销毁会话(退出)
-Route::delete('logout','SessionController@destory')->name('logout');
+Route::delete('logout','SessionController@destroy')->name('logout');
 
 //resource 方法来为用户添加好完整的 RESTful 动作，因此我们不需要再为用户添加编辑页面的路由。但你需要知道，一个符合 RESTful 架构的用户编辑路由应该是像下面这样：
 //Route::get('/users/{id}/edit', 'UsersController@edit')->name('users.edit');
+//定义激活功能路由
+Route::get('signup/confirm/{token}','UsersController@confirmEmail')->name('confirm_email');

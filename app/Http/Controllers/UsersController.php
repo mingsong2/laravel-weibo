@@ -6,17 +6,20 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use Illuminate\Http\Request;
 use App\Policies\UserPolicy;
 use App\Models\User;
-
+use Mail;
 use Auth;
 class UsersController extends Controller
 {
     /**
-     * 在构造方法里面利用"中间件"做身份验证 来锅炉未登录用户的edit update动作
+     * 在构造方法里面利用"中间件"做身份验证 用来过滤未登录用户的edit update动作
      */
     public function __construct()
     {
         $this->middleware('auth',[
-            'only' => ['edit','update']
+            'only' => ['edit','update','destory']
+        ]);
+        $this->middleware('guest',[
+            'only' => ['create']
         ]);
     }
 
@@ -27,7 +30,8 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+        $users=User::paginate(5);
+        return view('users.index',compact('users'));
     }
 
     /**
@@ -60,11 +64,27 @@ class UsersController extends Controller
             'email'=> $request->email,
             'password'=>bcrypt($request->password),
         ]);
-        Auth::login($user);
+        //Auth::login($user);
+        $this->sendEmailConfirmationTo($user);
         session()->flash('success','欢迎，您将在这里开启一段新的旅程~');
         return redirect()->route('users.show',[$user]);
     }
 
+    /**
+     * @param $user 当前用户登录信息
+     */
+    protected function sendEmailConfirmationTo($user){
+        $view = 'emails.confirm';
+        $data = compact('user');
+        $from = 'frank@126.com';
+        $name = 'frank';
+        $to = $user->email;
+        $subject = "感谢注册,请确认您的邮箱";
+
+        Mail::send($view,$data,function($message) use ($from,$to,$name,$subject){
+            $message->from($from,$name)->to($to)->subject($subject);
+        });
+    }
     /**
      * Display the specified resource.
      *
@@ -129,6 +149,21 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrfail($id);
+        $this->authorize('destroy',$user);
+        $user->delete();
+        session()->flash('success','成功删除用户!');
+        return back();
+    }
+
+    public function confirmEmail($token){
+        $user = User::where('activation_token',$token)->firstOrFail();
+        $user->activated = true;
+        $user->activation_token = null;
+        $user->save();
+
+        Auth::login($user);
+        session()->flash('success','恭喜你,激活成功!');
+        return redirect()->route('users.show',[$user]);
     }
 }
