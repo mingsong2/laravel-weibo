@@ -32,3 +32,9 @@ Route::delete('logout','SessionController@destroy')->name('logout');
 //Route::get('/users/{id}/edit', 'UsersController@edit')->name('users.edit');
 //定义激活功能路由
 Route::get('signup/confirm/{token}','UsersController@confirmEmail')->name('confirm_email');
+
+//定义用户重置密码路由
+Route::get('password/email','Auth\PasswordController@getEmail')->name('password.reset');
+Route::post('password/email','Auth\PasswordController@postEmail')->name('password.reset');
+Route::get('password/reset/{token}','Auth\PasswordController@getReset')->name('password.edit');
+Route::post('password/reset','Auth\PasswordController@postReset')->name('password.update');
