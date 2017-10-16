@@ -16,7 +16,7 @@ class UsersController extends Controller
     public function __construct()
     {
         $this->middleware('auth',[
-            'only' => ['edit','update','destory']
+            'only' => ['edit','update','destory','followers','followings']
         ]);
         $this->middleware('guest',[
             'only' => ['create']
@@ -94,7 +94,11 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
-        return view('users.show',compact('user'));  //compact('user')将用户数据与视图进行绑定在视图层可以直接用$user来访问用户实例
+        $statuses = $user->statuses()
+                            ->orderBy('created_at','desc')
+                            ->paginate(4);
+
+        return view('users.show',compact('user','statuses'));  //compact('user')将用户数据与视图进行绑定在视图层可以直接用$user来访问用户实例
     }
 
     /**
@@ -165,5 +169,24 @@ class UsersController extends Controller
         Auth::login($user);
         session()->flash('success','恭喜你,激活成功!');
         return redirect()->route('users.show',[$user]);
+    }
+
+    /**
+     * 找出某用户的所有粉丝
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function followers($id){
+        $user = User::findOrFail($id);
+        $users = $user->followers()->paginate(20);
+        $title="粉丝";
+        return view('users.show_follow',compact('users','title'));
+    }
+
+    public function followings($id){
+        $user = User::findOrFail($id);
+        $users = $user->followings()->paginate(20);
+        $title = "关注的人";
+        return view('users.show_follow',compact('users','title'));
     }
 }

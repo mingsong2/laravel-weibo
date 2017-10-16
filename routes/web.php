@@ -10,6 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+//测试react路由
+Route::get('/react','ReactController@react')->name('react');
 
 Route::get('','StaticPagesController@home')->name('home');
 Route::get('help','StaticPagesController@help')->name('help');
@@ -34,7 +36,30 @@ Route::delete('logout','SessionController@destroy')->name('logout');
 Route::get('signup/confirm/{token}','UsersController@confirmEmail')->name('confirm_email');
 
 //定义用户重置密码路由
-Route::get('password/email','Auth\PasswordController@getEmail')->name('password.reset');
-Route::post('password/email','Auth\PasswordController@postEmail')->name('password.reset');
-Route::get('password/reset/{token}','Auth\PasswordController@getReset')->name('password.edit');
-Route::post('password/reset','Auth\PasswordController@postReset')->name('password.update');
+Route::group(['prefix'=>'password'],function(){
+    Route::get('email','Auth\PasswordController@getEmail')->name('password.reset');
+    Route::post('email','Auth\PasswordController@postEmail')->name('password.reset');
+    Route::get('reset/{token}','Auth\PasswordController@getReset')->name('password.edit');
+    Route::post('reset','Auth\PasswordController@postReset')->name('password.update');
+});
+
+
+//定义微博控制器为资源型控制地路由
+Route::resource('statuses','StatusesController',['only'=>['store','destroy']]);
+
+//定义查看粉丝 和 关注的人路由
+
+Route::get('/users/{id}/followings','UsersController@followings')->name('users.followings');
+Route::get('/users/{id}/followers','UsersController@followers')->name('users.followers');
+
+//定义关注用户和取消用户路由
+Route::post('/users/followers/{id}','FollowersController@store')->name('followers.store');
+Route::delete('/users/followers/{id}','FollowersController@destroy')->name('followers.destroy');
+
+//测试验证码
+Route::get('/captcha','TestsController@captchaTest');
+
+Route::resource('test','TestController');
+
+//测试二维码QRcode
+Route::get('/qrcode','QrcodeController@qrcode');

@@ -1,6 +1,6 @@
 <?php
-
 define('LARAVEL_START', microtime(true));
+define('TEMP_PATH','/Volumes/work/pratice/laravel_weibo/public/temp/');
 
 /*
 |--------------------------------------------------------------------------
@@ -15,3 +15,4 @@ define('LARAVEL_START', microtime(true));
 */
 
 require __DIR__.'/../vendor/autoload.php';
+require __DIR__.'/../app/Common/functions.php';

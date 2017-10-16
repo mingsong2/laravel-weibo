@@ -4377,13 +4377,13 @@ a.thumbnail.active {
   .alert-success .alert-link {
     color: #2b542c; }
 
-.alert-info {
+.alert-info, .alert-status {
   background-color: #d9edf7;
   border-color: #bce8f1;
   color: #31708f; }
-  .alert-info hr {
+  .alert-info hr, .alert-status hr {
     border-top-color: #a6e1ec; }
-  .alert-info .alert-link {
+  .alert-info .alert-link, .alert-status .alert-link {
     color: #245269; }
 
 .alert-warning {
@@ -5921,6 +5921,45 @@ section.user_info {
     margin-bottom: 3px;
     margin-top: 15px; }
 
+.stats {
+  overflow: auto;
+  margin-top: 0;
+  padding: 0; }
+  .stats a {
+    float: left;
+    padding: 0 10px;
+    text-align: center;
+    width: 33%;
+    border-left: 1px solid #eeeeee;
+    color: gray; }
+    .stats a:first-child {
+      padding-left: 0;
+      border: 0; }
+    .stats a:hover {
+      text-decoration: none;
+      color: #337ab7; }
+  .stats strong {
+    display: block;
+    font-size: 1.2em;
+    color: black; }
+
+.user_avatars {
+  overflow: auto;
+  margin-top: 10px; }
+  .user_avatars .gravatar {
+    margin: 1px 1px; }
+  .user_avatars a {
+    padding: 0; }
+
+.users.follow {
+  padding: 0; }
+
+/* forms */
+#follow_form button {
+  margin: 0 auto;
+  display: block;
+  margin-top: 25px; }
+
 .gravatar {
   float: left;
   margin-right: 10px;
@@ -5961,3 +6000,42 @@ input {
   float: right;
   position: relative;
   right: 0; }
+
+/* universal */
+/* statuses */
+.statuses {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px; }
+  .statuses li {
+    padding: 10px 0;
+    border-top: 1px solid #e8e8e8;
+    position: relative; }
+  .statuses .user {
+    margin-top: 5em;
+    padding-top: 0; }
+  .statuses .content {
+    display: block;
+    margin-left: 60px;
+    word-break: break-word; }
+    .statuses .content img {
+      display: block;
+      padding: 5px 0; }
+  .statuses .timestamp {
+    color: #777777;
+    display: block;
+    margin-left: 60px; }
+  .statuses .gravatar {
+    margin-right: 10px;
+    margin-top: 5px; }
+  .statuses form button.status-delete-btn {
+    position: absolute;
+    right: 0;
+    top: 10px; }
+
+aside textarea {
+  height: 100px;
+  margin-bottom: 5px; }
+
+.status_form {
+  margin-top: 20px; }
